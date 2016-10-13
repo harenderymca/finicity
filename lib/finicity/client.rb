@@ -70,6 +70,21 @@ module Finicity
         raise_generic_error!(response)
       end
     end
+    
+    def add_testing_customer(user_guid)
+      request = ::Finicity::V1::Request::AddCustomer.new(token, user_guid)
+      request.log_request
+      response = request.add_testing_customer
+      log_response(response)
+
+      if response.ok?
+        parsed_response = ::Finicity::V1::Response::Customer.parse(response.body)
+        return parsed_response
+      else
+        raise_generic_error!(response)
+      end
+    end
+
 
     def authenticate!
       request = ::Finicity::V2::Request::PartnerAuthentication.new

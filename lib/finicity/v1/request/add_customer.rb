@@ -24,6 +24,10 @@ module Finicity::V1
       def add_customer
         http_client.post(url, body, headers)
       end
+      
+      def add_testing_customer
+        http_client.post(test_url, body, headers)
+      end
 
       def body
         {
@@ -48,6 +52,15 @@ module Finicity::V1
           'v1/',
           'customers/',
           'active'
+        )
+      end
+      
+      def test_url
+        ::URI.join(
+          ::Finicity.config.base_url,
+          'v1/',
+          'customers/',
+          'testing'
         )
       end
     end
