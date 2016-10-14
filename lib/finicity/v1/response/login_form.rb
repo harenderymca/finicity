@@ -6,11 +6,16 @@ module Finicity::V1
       ##
       # Saxomattic Attributes
       #
-      attribute :description
-      attribute :displayOrder, :type => ::Integer, :as => :display_order
       attribute :id
       attribute :name
+      attribute :description
+      attribute :value
+      attribute :displayOrder, :type => ::Integer, :as => :display_order
       attribute :mask
+      attribute :instructions
+      attribute :valueLengthMin, :type => ::Integer, :as => :value_length_min
+      attribute :valueLengthMax, :type => ::Integer, :as => :value_length_max
+      
 
       def mask?
         mask == 'true'
