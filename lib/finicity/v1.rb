@@ -16,6 +16,7 @@ require 'finicity/v1/request/interactive_refresh_account'
 require 'finicity/v1/request/interactive_refresh_account_with_mfa'
 require 'finicity/v1/request/refresh_accounts'
 require 'finicity/v1/request/update_credentials'
+require 'finicity/v1/request/add_all_accounts'
 
 require 'finicity/v1/response/accounts'
 require 'finicity/v1/response/customers'
