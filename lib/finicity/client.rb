@@ -57,8 +57,8 @@ module Finicity
       end
     end
 
-    def add_customer(user_guid)
-      request = ::Finicity::V1::Request::AddCustomer.new(token, user_guid)
+    def add_customer(user_guid, options={})
+      request = ::Finicity::V1::Request::AddCustomer.new(token, user_guid, options)
       request.log_request
       response = request.add_customer
       log_response(response)
@@ -71,8 +71,8 @@ module Finicity
       end
     end
     
-    def add_testing_customer(user_guid)
-      request = ::Finicity::V1::Request::AddCustomer.new(token, user_guid)
+    def add_testing_customer(user_guid, options={})
+      request = ::Finicity::V1::Request::AddCustomer.new(token, user_guid, options)
       request.log_request
       response = request.add_testing_customer
       log_response(response)
@@ -124,6 +124,25 @@ module Finicity
         raise_generic_error!(response)
       end
     end
+    
+    def add_all_accounts(customer_id, institution_id, login_credentials)
+      request = ::Finicity::V1::Request::AddAllAccounts.new(token, customer_id, institution_id, login_credentials)
+      request.log_request
+      response = request.add_accounts
+      log_response(response)
+
+      if response.status_code == 200
+        @mfa_session = nil
+        parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
+        return parsed_response.accounts
+      elsif response.status_code == 203
+        @mfa_session = response.headers["MFA-Session"]
+        parsed_response = ::Finicity::V1::Response::Mfa.parse(response.body)
+        return parsed_response.questions
+      else
+        raise_generic_error!(response)
+      end
+    end
 
     # The login_credentials parameter is an array of hashes with the keys :id, :name, :value
     def discover_accounts(customer_id, institution_id, login_credentials)
@@ -144,6 +163,8 @@ module Finicity
         raise_generic_error!(response)
       end
     end
+    
+    
 
     # The login_credentials parameter is an array of hashes with the keys :id, :name, :value
     # The mfa_credentials parameter is an array of hashes with keys :text, :answer

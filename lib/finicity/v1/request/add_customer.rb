@@ -11,14 +11,17 @@ module Finicity::V1
       # Attributes
       #
       attr_accessor :token,
-        :user_guid
+        :user_guid,:first_name, :last_name, :email
 
       ##
       # Instance Methods
       #
-      def initialize(token, user_guid)
+      def initialize(token, user_guid, options)
         @token = token
         @user_guid = user_guid
+        @first_name = options[:first_name]
+        @last_name = options[:last_name]
+        @email = options[:email]
       end
 
       def add_customer
@@ -32,9 +35,9 @@ module Finicity::V1
       def body
         {
           'username' => user_guid,
-          'email' => "#{user_guid}@mx.com",
-          'firstName' => user_guid,
-          'lastName' => user_guid
+          'email' => email,
+          'firstName' =>first_name,
+          'lastName' => last_name
         }.to_xml(:root => 'customer')
       end
 
