@@ -134,11 +134,30 @@ module Finicity
       if response.status_code == 200
         @mfa_session = nil
         parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
-        return parsed_response.accounts
+        return {:status => 200, :data => parsed_response.accounts}
       elsif response.status_code == 203
         @mfa_session = response.headers["MFA-Session"]
         parsed_response = ::Finicity::V1::Response::Mfa.parse(response.body)
-        return parsed_response.questions
+        return {:status => 203, :mfa_session => response.headers["MFA-Session"] ,:data => parsed_response.questions}
+      else
+        raise_generic_error!(response)
+      end
+    end
+    
+    def add_all_accounts_with_mfa(customer_id, institution_id, mfa_session, mfa_credentials)
+      request = ::Finicity::V1::Request::AddAllAccountsWithMfa.new(token, mfa_session, customer_id, institution_id, mfa_credentials)
+      request.log_request
+      response = request.add_all_accounts_with_mfa
+      log_response(response)
+
+      if response.status_code == 200
+        @mfa_session = nil
+        parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
+        return {:status => 200, :data => parsed_response.accounts}
+      elsif response.status_code == 203
+        @mfa_session = response.headers["MFA-Session"]
+        parsed_response = ::Finicity::V1::Response::Mfa.parse(response.body)
+        return {:status => 203, :mfa_session => response.headers["MFA-Session"], :data => parsed_response.questions}
       else
         raise_generic_error!(response)
       end

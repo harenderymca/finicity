@@ -7,7 +7,10 @@ module Finicity::V1
       # Saxomattic Attributes
       #
       attribute :text
+      attribute :answer
+      attribute :image
       attribute :choice, :elements => true, :as => :choices
+      attribute :imageChoice, :elements => true, :as => :image_choices
     end
 
     class Mfa
