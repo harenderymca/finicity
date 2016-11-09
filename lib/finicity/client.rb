@@ -107,7 +107,7 @@ module Finicity
 
       if response.ok?
         # No data to parse, so return a hash for consistent return type
-        return {}
+        return {:status => 200, :sucess => true,  :message => "Account successfully deleted." }
       else
         raise_generic_error!(response)
       end

@@ -46,7 +46,7 @@ module Finicity::V1
       def url
         ::URI.join(
           ::Finicity.config.base_url,
-          'v1/',
+          'v2/',
           'customers/',
           "#{customer_id}/",
           'accounts/',
