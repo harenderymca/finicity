@@ -85,7 +85,6 @@ module Finicity
       end
     end
 
-
     def authenticate!
       request = ::Finicity::V2::Request::PartnerAuthentication.new
       response = request.authenticate
@@ -183,8 +182,6 @@ module Finicity
       end
     end
     
-    
-
     # The login_credentials parameter is an array of hashes with the keys :id, :name, :value
     # The mfa_credentials parameter is an array of hashes with keys :text, :answer
     def discover_accounts_with_mfa(customer_id, institution_id, login_credentials, mfa_credentials)
@@ -217,6 +214,22 @@ module Finicity
         return parsed_response.accounts
       elsif response.status_code == 404
         return []
+      else
+        raise_generic_error!(response)
+      end
+    end
+    
+    def get_customer_account(customer_id, account_id)
+      request = ::Finicity::V1::Request::GetCustomerAccount.new(token, customer_id, account_id)
+      request.log_request
+      response = request.get_customer_account
+      log_response(response)
+
+      if response.ok?
+        parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
+        return {:status => 200, :data => parsed_response.accounts }
+      elsif response.status_code == 404
+        return {:status => 404, :data => [] }
       else
         raise_generic_error!(response)
       end
@@ -349,18 +362,18 @@ module Finicity
       if response.status_code == 200
         @mfa_session = nil
         parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
-        return parsed_response.accounts
+        return {:status => 200, :data => parsed_response.accounts}
       elsif response.status_code == 203
         @mfa_session = response.headers["MFA-Session"]
         parsed_response = ::Finicity::V1::Response::Mfa.parse(response.body)
-        return parsed_response.questions
+        return {:status => 203, :mfa_session => response.headers["MFA-Session"] ,:data => parsed_response.questions}
       else
         raise_generic_error!(response)
       end
     end
 
     # The mfa_credentials parameter is an array of hashes with keys :text, :answer
-    def interactive_refresh_account_with_mfa(customer_id, account_id, mfa_credentials)
+    def interactive_refresh_account_with_mfa(customer_id, account_id, mfa_session, mfa_credentials)
       request = ::Finicity::V1::Request::InteractiveRefreshAccountWithMfa.new(token, mfa_session, customer_id, account_id, mfa_credentials)
       request.log_request
       response = request.interactive_refresh_account_with_mfa
@@ -369,11 +382,11 @@ module Finicity
       if response.status_code == 200
         @mfa_session = nil
         parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
-        return parsed_response.accounts
+        return {:status => 200, :data => parsed_response.accounts}
       elsif response.status_code == 203
         @mfa_session = response.headers["MFA-Session"]
         parsed_response = ::Finicity::V1::Response::Mfa.parse(response.body)
-        return parsed_response.questions
+        return {:status => 203, :mfa_session => response.headers["MFA-Session"] ,:data => parsed_response.questions}
       else
         raise_generic_error!(response)
       end
