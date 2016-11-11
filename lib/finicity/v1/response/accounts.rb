@@ -12,7 +12,7 @@ module Finicity::V1
       attribute :balance, :type => ::Float
       attribute :type
       attribute :aggregationStatusCode, :type => ::Integer, :as => :aggregation_status_code
-      attribute :status, :type => ::Integer
+      attribute :status
       attribute :customerId, :as => :customer_id
       attribute :institutionId, :as => :institution_id
       attribute :balanceDate, :type => ::Integer
