@@ -442,13 +442,7 @@ module Finicity
         error_code = nil
       end
 
-      # Finicity API uses 500 status code, with a 103 code in the body to communicate
-      # that the credentials are invalid.
-      if response.status_code == 500 && error_code == 103
-        fail ::Finicity::InvalidCredentialsError.new(103)
-      else
-        fail ::Finicity::GenericError.new(error_message, response.status_code, error_code)
-      end
+      fail ::Finicity::GenericError.new(error_message, response.status_code, error_code)
     end
 
   end
