@@ -1,7 +1,6 @@
 module Finicity
   class GenericError < ::StandardError
     ERROR_CODE_MAP = {
-      '0' => 'Success.',
       '102' => 'Oops. Service Unavailable, please try again after some time.',
       '320' => 'Oops. Service Unavailable, please try again after some time.',
       '580' => 'Oops. Service Unavailable, please try again after some time.',
@@ -29,6 +28,14 @@ module Finicity
     def to_s
       custom_message = ERROR_CODE_MAP[finicity_code.to_s] || error_message
       "#{custom_message}"
+    end
+    
+    def http_status
+      code = 500
+      unless ERROR_CODE_MAP[finicity_code.to_s].blank?
+        code = 103 
+      end
+      return code
     end
   end
 
@@ -80,6 +87,7 @@ module Finicity
     def to_s
       "#{error_message}"
     end
+    
   end
 
   class InvalidCredentialsError < ::Finicity::FinicityAggregationError
