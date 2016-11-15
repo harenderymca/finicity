@@ -69,7 +69,7 @@ module Finicity::V1
           'institutions/',
           "#{institution_id}/",
           'accounts/',
-          'addall',
+          'addall/',
           'mfa'
         )
       end
