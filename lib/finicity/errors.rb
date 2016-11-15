@@ -2,18 +2,18 @@ module Finicity
   class GenericError < ::StandardError
     ERROR_CODE_MAP = {
       '0' => 'Success.',
-      '102' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '320' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '580' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '103' => 'Invalid User (“Oops. Invalid Credentials, please try again!”).',
+      '102' => 'Oops. Service Unavailable, please try again after some time.',
+      '320' => 'Oops. Service Unavailable, please try again after some time.',
+      '580' => 'Oops. Service Unavailable, please try again after some time.',
+      '103' => 'Oops. Invalid Credentials, please try again!.',
       '106' => 'Account Name/Number/Type mismatch.',
       '108' => 'End user action required at the third party site.',
       '109' => 'Password change required at the third party site.',
-      '123' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '125' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '127' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '128' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '130' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
+      '123' => 'Oops. Service Unavailable, please try again after some time.',
+      '125' => 'Oops. Service Unavailable, please try again after some time.',
+      '127' => 'Oops. Service Unavailable, please try again after some time.',
+      '128' => 'Oops. Service Unavailable, please try again after some time.',
+      '130' => 'Oops. Service Unavailable, please try again after some time.',
       '185' => 'MFA answer(s) missing.',
       '187' => 'Invalid MFA.',
       '331' => 'Oops. Transaction timed out! Please input your credentials again.',
@@ -27,8 +27,8 @@ module Finicity
     end
 
     def to_s
-      ERROR_CODE_MAP[finicity_code.to_s] || error_message
-      "#{error_message}"
+      custom_message = ERROR_CODE_MAP[finicity_code.to_s] || error_message
+      "#{custom_message}"
     end
   end
 
@@ -50,16 +50,18 @@ module Finicity
   class FinicityAggregationError < ::StandardError
     ERROR_CODE_MAP = {
       '0' => 'Success.',
-      '102' => 'Retry error. Website is down or there is a connectivity issue.',
-      '103' => 'Invalid User (“Oops. Invalid Credentials, please try again!”).',
+      '102' => 'Oops. Service Unavailable, please try again after some time.',
+      '320' => 'Oops. Service Unavailable, please try again after some time.',
+      '580' => 'Oops. Service Unavailable, please try again after some time.',
+      '103' => 'Oops. Invalid Credentials, please try again!.',
       '106' => 'Account Name/Number/Type mismatch.',
       '108' => 'End user action required at the third party site.',
       '109' => 'Password change required at the third party site.',
-      '123' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '125' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '127' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '128' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
-      '130' => 'Service Unavailable (“Oops. Service Unavailable, please try again after some time”).',
+      '123' => 'Oops. Service Unavailable, please try again after some time.',
+      '125' => 'Oops. Service Unavailable, please try again after some time.',
+      '127' => 'Oops. Service Unavailable, please try again after some time.',
+      '128' => 'Oops. Service Unavailable, please try again after some time.',
+      '130' => 'Oops. Service Unavailable, please try again after some time.',
       '185' => 'MFA answer(s) missing.',
       '187' => 'Invalid MFA.',
       '331' => 'Oops. Transaction timed out! Please input your credentials again.',

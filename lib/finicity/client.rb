@@ -437,6 +437,7 @@ module Finicity
         error = ::Finicity::V1::Response::Error.parse(response.body)
         error_message = error.message
         error_code = error.code
+        ::Finicity.logger.debug "xml response parsed...."
       else
         error_message = response.body
         error_code = nil
