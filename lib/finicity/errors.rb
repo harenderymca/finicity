@@ -16,6 +16,8 @@ module Finicity
       '185' => 'MFA answer(s) missing.',
       '187' => 'Invalid MFA.',
       '331' => 'Oops. Transaction timed out! Please input your credentials again.',
+      '511' => 'Oops. Service Unavailable, please try again after some time.',
+      '903' => 'Oops. Service Unavailable, please try again after some time.'
     }
     attr_reader :error_message, :http_status, :finicity_code
 
@@ -27,6 +29,9 @@ module Finicity
 
     def to_s
       custom_message = ERROR_CODE_MAP[finicity_code.to_s] || error_message
+      if custom_message.include? "Aggregation error"
+        custom_message = "Oops. Service Unavailable, please try again after some time."
+      end
       "#{custom_message}"
     end
     
