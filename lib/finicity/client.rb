@@ -326,6 +326,17 @@ module Finicity
         end
       end
     end
+    
+    def get_all_institutions
+      request = ::Finicity::V1::Request::GetInstitutions.new(token, institution_name = nil)
+      response = request.get_institutions(1, 10)
+      if response.ok?
+        parsed_response = ::Finicity::V1::Response::Institutions.parse(response.body)
+        parsed_response.institutions
+      else
+        raise_generic_error!(response)
+      end
+    end
 
     def get_login_form(institution_id)
       request = ::Finicity::V1::Request::GetLoginForm.new(token, institution_id)
