@@ -5,6 +5,7 @@ module Finicity::V1
       extend ::HTTPClient::IncludeClient
       include_http_client do |client|
         client.cookie_manager = nil
+        client.proxy = ::Finicity.config.proxy_url
       end
 
       ##

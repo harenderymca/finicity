@@ -4,7 +4,8 @@ module Finicity
       :logger,
       :partner_id,
       :partner_secret,
-      :app_key
+      :app_key,
+      :proxy_url
 
     def initialize
       @logger = ::Logger.new(STDOUT)
