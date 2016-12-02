@@ -14,6 +14,7 @@ module Finicity::V1
       attribute :memo
       attribute :postedDate, :type => ::Integer, :as => :posted_date
       attribute :status
+      attribute :type
     end
 
     class Transactions
