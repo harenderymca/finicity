@@ -18,6 +18,7 @@ module Finicity::V1
       attribute :image
       attribute :choice, :elements => true, :as => :choices
       attribute :imageChoice, :elements => true, :class => ::Finicity::V1::Response::SaxTesterEmbedded
+      attribute :choice, :elements => true, :as => :text_choices, :class => ::Finicity::V1::Response::SaxTesterEmbedded
       
     end
 
