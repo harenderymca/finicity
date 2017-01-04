@@ -219,6 +219,22 @@ module Finicity
       end
     end
     
+    def get_all_accounts(customer_id)
+      request = ::Finicity::V1::Request::GetCustomerAccount.new(token, customer_id, nil)
+      request.log_request
+      response = request.get_all_accounts
+      log_response(response)
+
+      if response.ok?
+        parsed_response = ::Finicity::V1::Response::Accounts.parse(response.body)
+        return {:status => 200, :data => parsed_response.accounts }
+      elsif response.status_code == 404
+        return {:status => 404, :data => [] }
+      else
+        raise_generic_error!(response)
+      end
+    end
+    
     def get_customer_account(customer_id, account_id)
       request = ::Finicity::V1::Request::GetCustomerAccount.new(token, customer_id, account_id)
       request.log_request
@@ -435,11 +451,11 @@ module Finicity
     private
 
     def log_response(response)
-      ::Finicity.logger.debug do
-        log = "RESPONSE"
-        log << "\n  STATUS CODE: #{response.status_code}"
-        log << "\n  BODY: #{response.body}"
-        log
+	  ::Finicity.logger.debug do
+		log = "RESPONSE"
+		log << "\n  STATUS CODE: #{response.status_code}"
+		log << "\n  BODY: #{response.body}"
+		log
       end
     end
 

@@ -27,12 +27,26 @@ module Finicity::V1
       def get_customer_account
         http_client.get(url, nil, headers)
       end
+      
+      def get_all_accounts
+        http_client.get(all_account_url, nil, headers)
+      end
 
       def headers
         {
           'Finicity-App-Key' => ::Finicity.config.app_key,
           'Finicity-App-Token' => token
         }
+      end
+      
+      def all_account_url
+        ::URI.join(
+          ::Finicity.config.base_url,
+          'v1/',
+          'customers/',
+          "#{customer_id}/",
+          'accounts/'
+        )
       end
 
       def url
