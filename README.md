@@ -1,4 +1,4 @@
-finicity
+finicity-update
 ========
 
 A gem to communicate easily with Finicity's API
